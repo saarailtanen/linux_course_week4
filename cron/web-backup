@@ -1,0 +1,2 @@
+# Server A: /etc/cron.d/web-backup (hourly)
+0 * * * * root /usr/local/bin/backup-www.sh

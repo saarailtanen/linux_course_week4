@@ -1,0 +1,2 @@
+# Server B: /etc/cron.d/backup-cleanup (keep 7 days)
+30 3 * * * backupuser find /srv/backups/www -name "www-*.tar.gz" -mtime +7 -delete
