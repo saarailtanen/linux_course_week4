@@ -1,0 +1,14 @@
+-- On A: dedicated replication user, only usable from B
+CREATE USER 'repl'@'192.168.1.74' IDENTIFIED BY '<REPLICATION_PASSWORD>';
+GRANT REPLICATION SLAVE ON *.* TO 'repl'@'192.168.1.74';
+-- Consistent copy with binlog position: mysqldump --single-transaction --master-data=2 --databases counterdb
+
+-- On B: read-only application user
+CREATE USER 'viikko4_ro'@'localhost' IDENTIFIED BY '<READONLY_PASSWORD>';
+GRANT SELECT ON counterdb.counter TO 'viikko4_ro'@'localhost';
+
+-- On B: start replication from the position in the dump
+CHANGE MASTER TO MASTER_HOST='192.168.1.132', MASTER_USER='repl', MASTER_PASSWORD='<REPLICATION_PASSWORD>',
+  MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=1081;
+START SLAVE;
+SHOW SLAVE STATUS\G
