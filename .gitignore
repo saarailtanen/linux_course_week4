@@ -1,0 +1,7 @@
+*.sql
+*.tar.gz
+*.key
+*.pem
+*.env
+db.php
+id_*
